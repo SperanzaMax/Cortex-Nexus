@@ -1,0 +1,5 @@
+.env
+loop.log
+__pycache__/
+simulacion_300.log
+*.env
