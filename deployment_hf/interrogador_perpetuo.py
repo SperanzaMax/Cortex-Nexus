@@ -199,9 +199,20 @@ def loop_infinito():
                 print(f"  [Error GITHUB] {e}")
             ultimo_dia_reporte = hoy.day
         
-        espera = GLOBAL_CONFIG["base_sleep_seconds"] / max(GLOBAL_CONFIG["speed_multiplier"], 0.1)
-        print(f"\n  [Zzz] Esperando {espera:.1f}s para el siguiente ciclo (Multiplicador x{GLOBAL_CONFIG['speed_multiplier']})...")
-        time.sleep(espera)
+        # Reposo Dinámico Interactivo
+        tiempo_dormido = 0.0
+        print(f"\n  [Zzz] Entrando a reposo interactivo. Velocidad actual: x{GLOBAL_CONFIG['speed_multiplier']}...")
+        while True:
+            if not GLOBAL_CONFIG["enabled"]:
+                time.sleep(1.0)
+                continue
+            
+            objetivo_espera = GLOBAL_CONFIG["base_sleep_seconds"] / max(GLOBAL_CONFIG["speed_multiplier"], 0.1)
+            if tiempo_dormido >= objetivo_espera:
+                break
+                
+            time.sleep(1.0)
+            tiempo_dormido += 1.0
 
 if __name__ == "__main__":
     loop_infinito()
