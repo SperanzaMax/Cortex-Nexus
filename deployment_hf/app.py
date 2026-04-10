@@ -245,6 +245,7 @@ async def dashboard_home():
                     } else {
                         alert(`Loop Autónomo pausado`);
                     }
+                    updateData();
                 } catch(e) { alert("Error estableciendo configuración"); }
             }
 
