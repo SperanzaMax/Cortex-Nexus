@@ -294,13 +294,27 @@ async def dashboard_home():
                         chart.update('none');
                     }
                     
-                    // Cargar logs
-                    const logRes = await fetch('/api/logs');
+                    // Cargar logs y comparativas contra el grupo de control
+                    const logRes = await fetch('/api/control');
                     const logData = await logRes.json();
-                    if (logData.logs && logData.logs.length > 0) {
+                    if (logData.comparisons && logData.comparisons.length > 0) {
                         const logBox = document.getElementById('log-box');
-                        logBox.innerHTML = logData.logs.map(l => 
-                            `<div style='margin-bottom:8px; border-bottom:1px solid #334155; padding-bottom:6px;'><span style='color:#f59e0b;'>❓</span> ${l.pregunta.substring(0,80)}...<br><span style='color:#10b981;'>💬</span> ${l.respuesta.substring(0,120)}...<br><span style='color:#475569; font-size:0.65rem;'>Novedad: ${l.novedad} | Complejidad: ${l.complejidad} | Época #${l.epoca}</span></div>`
+                        logBox.innerHTML = logData.comparisons.map(l => 
+                            `<div style='margin-bottom:8px; border-bottom:1px solid #334155; padding-bottom:6px;'>
+                                <span style='color:#f59e0b;'>❓</span> ${l.pregunta.substring(0,80)}...<br>
+                                <div style="display:flex; gap:10px; margin-top:4px;">
+                                    <div style="flex:1; border-left:2px solid #38bdf8; padding-left:5px;">
+                                        <span style="color:#38bdf8; font-size:0.65rem; font-weight:bold;">NEXUS (Emocional)</span><br>
+                                        <span style='color:#10b981;'>💬</span> ${(l.respuesta_nexus||'').substring(0,100)}...<br>
+                                        <span style="font-size:0.6rem; color:#94a3b8;">Novedad: ${Number(l.novedad_nexus).toFixed(2)} | Cplx: ${Number(l.complejidad_nexus).toFixed(2)}</span>
+                                    </div>
+                                    <div style="flex:1; border-left:2px solid #94a3b8; padding-left:5px;">
+                                        <span style="color:#94a3b8; font-size:0.65rem; font-weight:bold;">GROQ (Base Control)</span><br>
+                                        <span style='color:#94a3b8;'>💬</span> ${(l.respuesta_control||'').substring(0,100)}...<br>
+                                        <span style="font-size:0.6rem; color:#94a3b8;">Novedad: ${Number(l.novedad_control).toFixed(2)} | Cplx: ${Number(l.complejidad_control).toFixed(2)}</span>
+                                    </div>
+                                </div>
+                            </div>`
                         ).join('');
                     }
                 } catch(e) { console.error("Error cargando datos:", e); }
