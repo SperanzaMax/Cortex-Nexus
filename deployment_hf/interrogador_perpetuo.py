@@ -139,6 +139,7 @@ def loop_infinito():
     print(f"Control (baseline):   Groq directo (sin modulador)")
     print()
     
+    global ultimo_dia_reporte
     ciclo = 0
     while GLOBAL_CONFIG["enabled"]:
         ciclo += 1
@@ -176,6 +177,27 @@ def loop_infinito():
                     print(f"  [BACKUP] Estado: {res_backup.json()}")
             except Exception as e:
                 print(f"  [Error SUEÑO / BACKUP] {e}")
+        
+        # 5) Auto Publish Github (Cronjob Diario, Semanal y Mensual)
+        hoy = datetime.datetime.now()
+        if hoy.day != ultimo_dia_reporte:
+            print(f"\n  [GITHUB] Cambio de día detectado. Generando y subiendo reportes...")
+            try:
+                with httpx.Client(timeout=90.0) as client:
+                    # Reporte Diario + CSV Export
+                    res1 = client.post("http://127.0.0.1:7860/api/publish_github?period=1", headers={"Authorization": f"Bearer {HF_TOKEN}"})
+                    print(f"  [GITHUB Diario] {res1.json()}")
+                    
+                    if hoy.weekday() == 0:  # Lunes
+                        res7 = client.post("http://127.0.0.1:7860/api/publish_github?period=7", headers={"Authorization": f"Bearer {HF_TOKEN}"})
+                        print(f"  [GITHUB Semanal] {res7.json()}")
+                        
+                    if hoy.day == 1:  # Primero de mes
+                        res30 = client.post("http://127.0.0.1:7860/api/publish_github?period=30", headers={"Authorization": f"Bearer {HF_TOKEN}"})
+                        print(f"  [GITHUB Mensual] {res30.json()}")
+            except Exception as e:
+                print(f"  [Error GITHUB] {e}")
+            ultimo_dia_reporte = hoy.day
         
         espera = GLOBAL_CONFIG["base_sleep_seconds"] / max(GLOBAL_CONFIG["speed_multiplier"], 0.1)
         print(f"\n  [Zzz] Esperando {espera:.1f}s para el siguiente ciclo (Multiplicador x{GLOBAL_CONFIG['speed_multiplier']})...")

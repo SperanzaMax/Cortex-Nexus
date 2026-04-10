@@ -689,6 +689,62 @@ async def auto_report(period: int = 7):
     except Exception as e:
         return {"error": str(e)}
 
+def _github_upload(token, repo, path, content_str, message):
+    import base64
+    url = f"https://api.github.com/repos/{repo}/contents/{path}"
+    headers = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github.v3+json", "User-Agent": "Cortex-Nexus"}
+    
+    with httpx.Client() as client:
+        r = client.get(url, headers=headers)
+        sha = r.json().get("sha") if r.status_code == 200 else None
+        
+        data = {
+            "message": message,
+            "content": base64.b64encode(content_str.encode("utf-8")).decode("utf-8")
+        }
+        if sha: data["sha"] = sha
+        
+        client.put(url, headers=headers, json=data)
+
+@app.post("/api/publish_github")
+async def publish_github(period: int = 1):
+    """Subir reporte y la DB CSV actual al repositorio de Github directamente usando API."""
+    try:
+        github_token = os.getenv("GITHUB_TOKEN")
+        if not github_token:
+            return {"error": "GITHUB_TOKEN no configurado en el entorno."}
+        
+        repo = "SperanzaMax/Cortex-Nexus"
+        # 1. Export CSV
+        rows = _get_snapshots()
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow(["id", "timestamp", "qualia", "satisfaccion", "frustracion", "aburrimiento", "autoConfianza", "fatiga", "pregunta", "respuesta", "novedad", "complejidad"])
+        for r in rows:
+            meta = {}
+            try: meta = json.loads(r.get("metadata", "{}"))
+            except: pass
+            writer.writerow([r.get("id", ""), r.get("timestamp", ""), r.get("qualia", 0), r.get("satisfaccion", 0), r.get("frustracion", 0), r.get("aburrimiento", 0), r.get("autoConfianza", 0), r.get("fatiga", 0), meta.get("pregunta", ""), meta.get("respuesta", ""), meta.get("novedad", ""), meta.get("complejidad", "")])
+        
+        _github_upload(github_token, repo, "data/cma_memory_export.csv", output.getvalue(), "Auto-update DB export")
+        
+        # 2. Generar Reporte
+        report_data = await auto_report(period)
+        if "error" in report_data:
+            return {"error": report_data["error"]}
+        
+        md_content = f"# Reporte Clínico Automático ({period} días)\n\n"
+        md_content += f"**Épocas Analizadas**: {report_data['epocas_analizadas']}\n"
+        md_content += f"**Fecha de Análisis**: {datetime.datetime.utcnow().isoformat()}\n\n"
+        md_content += f"## Acta Clínica de IA\n{report_data['acta_clinica']}\n"
+        
+        path = f"reports/reporte_{period}_dias.md"
+        _github_upload(github_token, repo, path, md_content, f"Auto-reporte IA de {period} días")
+        
+        return {"status": "Publicado en GitHub exitosamente"}
+    except Exception as e:
+        return {"error": str(e)}
+        
 @app.post("/api/sleep")
 async def sleep_consolidation():
     """Ejecuta consolidación nocturna (Sleep Replay) del arquetipo"""
