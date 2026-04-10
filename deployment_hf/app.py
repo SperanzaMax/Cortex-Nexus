@@ -187,10 +187,10 @@ async def dashboard_home():
                     <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">Acelera o pausa los ciclos autónomos.</p>
                 </div>
                 <div style="display:flex; gap:8px;">
-                    <button style="padding:6px 12px; border-radius:8px; border:1px solid #38bdf8; background:transparent; color:#38bdf8; cursor:pointer;" onclick="setSpeed(1)">1x</button>
-                    <button style="padding:6px 12px; border-radius:8px; border:1px solid #38bdf8; background:transparent; color:#38bdf8; cursor:pointer;" onclick="setSpeed(2)">2x</button>
-                    <button style="padding:6px 12px; border-radius:8px; border:1px solid #38bdf8; background:transparent; color:#38bdf8; cursor:pointer;" onclick="setSpeed(5)">5x</button>
-                    <button style="padding:6px 12px; border-radius:8px; border:1px solid #a78bfa; background:transparent; color:#a78bfa; cursor:pointer;" onclick="setSpeed(0)">⏸️ Pausa</button>
+                    <button id="btn-1" class="btn-speed" data-color="#38bdf8" style="padding:6px 12px; border-radius:8px; border:1px solid #38bdf8; background:transparent; color:#38bdf8; cursor:pointer; transition:background 0.2s;" onclick="setSpeed(1)">1x</button>
+                    <button id="btn-2" class="btn-speed" data-color="#38bdf8" style="padding:6px 12px; border-radius:8px; border:1px solid #38bdf8; background:transparent; color:#38bdf8; cursor:pointer; transition:background 0.2s;" onclick="setSpeed(2)">2x</button>
+                    <button id="btn-5" class="btn-speed" data-color="#38bdf8" style="padding:6px 12px; border-radius:8px; border:1px solid #38bdf8; background:transparent; color:#38bdf8; cursor:pointer; transition:background 0.2s;" onclick="setSpeed(5)">5x</button>
+                    <button id="btn-p" class="btn-speed" data-color="#a78bfa" style="padding:6px 12px; border-radius:8px; border:1px solid #a78bfa; background:transparent; color:#a78bfa; cursor:pointer; transition:background 0.2s;" onclick="setSpeed(0)">⏸️ Pausa</button>
                 </div>
             </div>
 
@@ -256,6 +256,27 @@ async def dashboard_home():
                     if (jsonRes.error) {
                         console.error("API Error:", jsonRes);
                         return;
+                    }
+
+                    if (jsonRes.config) {
+                        const m = jsonRes.config.speed_multiplier;
+                        const en = jsonRes.config.enabled;
+                        document.querySelectorAll('.btn-speed').forEach(b => {
+                            b.style.backgroundColor = 'transparent';
+                            b.style.color = b.getAttribute('data-color');
+                        });
+                        
+                        let activeId = '';
+                        if (!en) activeId = 'btn-p';
+                        else if (m === 1) activeId = 'btn-1';
+                        else if (m === 2) activeId = 'btn-2';
+                        else if (m === 5) activeId = 'btn-5';
+
+                        if (activeId) {
+                            const btn = document.getElementById(activeId);
+                            btn.style.backgroundColor = btn.getAttribute('data-color');
+                            btn.style.color = '#000';
+                        }
                     }
                     
                     const data = jsonRes.history;
@@ -365,7 +386,8 @@ async def get_history():
             "total_epocas": total_epocas,
             "total_sleeps": total_sleeps,
             "sleep_events": sleep_events,
-            "history": [dict(r) for r in rows]
+            "history": [dict(r) for r in rows],
+            "config": GLOBAL_CONFIG
         }
     except Exception as e:
         return {"error": str(e), "msg": "Error leyendo historial"}
