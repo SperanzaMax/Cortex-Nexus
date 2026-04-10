@@ -14,6 +14,39 @@ import re
 # Configuración del Sistema Emocional
 DB_PATH = "/tmp/cma_memory.db"
 
+# Restauración Automática desde HF Datasets
+def _restore_from_backup():
+    try:
+        # Solo restaurar si la base de datos no existe aún o configurando inicio limpio
+        if os.path.exists(DB_PATH) and os.path.getsize(DB_PATH) > 10000:
+            print("[RESTORE] La DB ya existe con datos en el entorno local. Saltando descarga.")
+            return
+            
+        token = os.getenv("HF_TOKEN")
+        if not token: 
+            print("[RESTORE] HF_TOKEN no encontrado. Saltando restauración.")
+            return
+            
+        import huggingface_hub
+        import shutil
+        
+        print("[RESTORE] Intentando restaurar DB desde HF Datasets...")
+        downloaded_path = huggingface_hub.hf_hub_download(
+            repo_id="SperanzaMax/Cortex-Memory-Bank",
+            repo_type="dataset",
+            filename="cma_memory_latest.db",
+            token=token
+        )
+        
+        if os.path.exists(downloaded_path):
+            shutil.copy2(downloaded_path, DB_PATH)
+            print(f"[RESTORE] DB restaurada con éxito desde Dataset: {downloaded_path}")
+            
+    except Exception as e:
+        print(f"[RESTORE] No se pudo restaurar la DB (backup inexistente o error). Iniciando vacía. Error: {e}")
+
+_restore_from_backup()
+
 # Crear tabla de eventos de sueño si no existe
 def _init_sleep_table():
     try:
