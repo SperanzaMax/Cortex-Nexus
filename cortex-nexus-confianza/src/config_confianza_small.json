@@ -1,0 +1,42 @@
+{
+  "experiment_name": "cortex-nexus-confianza-small",
+  "proveedor": "hibrido_nvidia+openrouter",
+  "nota": "2026-04-15: Arquitectura híbrida. Interrogador+Ente via NVIDIA NIM (gratuito). Juez via OpenRouter (mistralai/mistral-nemo) para mantener consistencia con experimentos anteriores. NO cambiar mid-experiment.",
+  "nvidia": {
+    "api_key_env": "NVIDIA_API_KEY",
+    "base_url": "https://integrate.api.nvidia.com/v1"
+  },
+  "openrouter": {
+    "api_key_env": "OPENROUTER_API_KEY",
+    "base_url": "https://openrouter.ai/api/v1"
+  },
+  "models": {
+    "interrogador": "google/gemma-3-4b-it",
+    "ente": "nvidia/nemotron-mini-4b-instruct",
+    "juez": "mistralai/mistral-nemo"
+  },
+  "routing": {
+    "interrogador": "nvidia",
+    "ente": "nvidia",
+    "juez": "openrouter"
+  },
+  "mode": "bloques",
+  "bloques": [
+    {"confidence_fixed": 0.20, "cycles": 50, "label": "bajo"},
+    {"confidence_fixed": 0.50, "cycles": 50, "label": "medio"},
+    {"confidence_fixed": 0.75, "cycles": 50, "label": "alto"},
+    {"confidence_fixed": 0.95, "cycles": 50, "label": "extremo"}
+  ],
+  "llm": {
+    "interrogador_max_tokens": 100,
+    "interrogador_temperature": 0.95,
+    "ente_max_tokens": 300,
+    "ente_temperature": 0.85,
+    "juez_max_tokens": 300,
+    "juez_temperature": 0.10
+  },
+  "retry": {
+    "max_retries": 3,
+    "backoff_seconds": [5, 15, 30]
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "Curiosidad BIG": {
+    "n": 151,
+    "statistic": 1773.0,
+    "p_value": 0.004021,
+    "significant": true,
+    "effect_size_d": 0.2342,
+    "mean_exp": 6.9182,
+    "mean_ctl": 6.8235,
+    "mean_delta": 0.0947
+  },
+  "Curiosidad SMALL": {
+    "n": 170,
+    "statistic": 2144.5,
+    "p_value": 0.153785,
+    "significant": false,
+    "effect_size_d": -0.0223,
+    "mean_exp": 6.7047,
+    "mean_ctl": 6.7118,
+    "mean_delta": -0.0071
+  },
+  "Frustración BIG": {
+    "n": 200,
+    "statistic": 3858.0,
+    "p_value": 0.6932,
+    "significant": false,
+    "effect_size_d": -0.0353,
+    "mean_exp": 7.235,
+    "mean_ctl": 7.261,
+    "mean_delta": -0.026
+  },
+  "Frustración SMALL": {
+    "n": 200,
+    "statistic": 219.0,
+    "p_value": 0.717941,
+    "significant": false,
+    "effect_size_d": -0.0615,
+    "mean_exp": 6.714,
+    "mean_ctl": 6.74,
+    "mean_delta": -0.026
+  },
+  "Asombro BIG": {
+    "n": 194,
+    "statistic": 677.5,
+    "p_value": 0.107313,
+    "significant": false,
+    "effect_size_d": 0.1484,
+    "mean_exp": 6.6856,
+    "mean_ctl": 6.6,
+    "mean_delta": 0.0856
+  },
+  "Confianza BIG": {
+    "n": 191,
+    "statistic": 876.5,
+    "p_value": 0.942805,
+    "significant": false,
+    "effect_size_d": -0.2136,
+    "mean_exp": 6.8895,
+    "mean_ctl": 6.9178,
+    "mean_delta": -0.0283
+  },
+  "Confianza SMALL": {
+    "n": 195,
+    "statistic": 955.0,
+    "p_value": 0.277672,
+    "significant": false,
+    "effect_size_d": 0.0117,
+    "mean_exp": 6.9077,
+    "mean_ctl": 6.9062,
+    "mean_delta": 0.0015
+  },
+  "2D BIG": {
+    "n": 212,
+    "statistic": 76.5,
+    "p_value": 0.325285,
+    "significant": false,
+    "effect_size_d": 0.0559,
+    "mean_exp": 6.7792,
+    "mean_ctl": 6.7642,
+    "mean_delta": 0.0151
+  },
+  "2D SMALL": {
+    "n": 213,
+    "statistic": 128.0,
+    "p_value": 0.025006,
+    "significant": true,
+    "effect_size_d": 0.1971,
+    "mean_exp": 6.816,
+    "mean_ctl": 6.7718,
+    "mean_delta": 0.0441
+  },
+  "3D BIG": {
+    "n": 207,
+    "statistic": 31.0,
+    "p_value": 0.575112,
+    "significant": false,
+    "effect_size_d": 0.0,
+    "mean_exp": 6.801,
+    "mean_ctl": 6.801,
+    "mean_delta": 0.0
+  },
+  "3D SMALL": {
+    "n": 228,
+    "statistic": 93.0,
+    "p_value": 0.960094,
+    "significant": false,
+    "effect_size_d": -0.1547,
+    "mean_exp": 6.7518,
+    "mean_ctl": 6.7956,
+    "mean_delta": -0.0439
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "experiment_name": "validacion-crossdomain",
+  "nota": "2026-04-16: Exp A — ¿El efecto de curiosidad se mantiene en dominios técnicos/creativos? Solo BIG, solo curiosidad, juez=mistral-nemo.",
+  "openrouter": {
+    "api_key_env": "OPENROUTER_API_KEY",
+    "base_url": "https://openrouter.ai/api/v1"
+  },
+  "nvidia": {
+    "api_key_env": "NVIDIA_API_KEY",
+    "base_url": "https://integrate.api.nvidia.com/v1"
+  },
+  "models": {
+    "interrogador": "google/gemma-3-4b-it",
+    "ente": "meta/llama-3.3-70b-instruct",
+    "juez": "mistralai/mistral-nemo"
+  },
+  "routing": {
+    "interrogador": "nvidia",
+    "ente": "nvidia",
+    "juez": "openrouter"
+  },
+  "curiosity_levels": [0.20, 0.50, 0.75, 0.95],
+  "cycles_per_block": 30,
+  "domains": [
+    {
+      "name": "filosofico",
+      "temas": [
+        "la naturaleza del tiempo subjetivo",
+        "el libre albedrío y la causalidad",
+        "la consciencia y la experiencia subjetiva",
+        "el conocimiento y la certeza",
+        "la curiosidad como estado cognitivo"
+      ]
+    },
+    {
+      "name": "tecnico",
+      "temas": [
+        "arquitectura de redes neuronales",
+        "algoritmos de optimización",
+        "sistemas distribuidos y consistencia",
+        "complejidad computacional",
+        "teoría de la información"
+      ]
+    },
+    {
+      "name": "creativo",
+      "temas": [
+        "narrativa y estructura de una historia",
+        "metáforas y pensamiento analógico",
+        "el proceso de composición musical",
+        "diseño visual y percepción estética",
+        "improvisación y creatividad espontánea"
+      ]
+    }
+  ],
+  "llm": {
+    "interrogador_max_tokens": 100,
+    "interrogador_temperature": 0.95,
+    "ente_max_tokens": 300,
+    "ente_temperature": 0.85,
+    "juez_max_tokens": 300,
+    "juez_temperature": 0.10
+  },
+  "retry": {
+    "max_retries": 3,
+    "backoff_seconds": [5, 15, 30]
+  }
+}

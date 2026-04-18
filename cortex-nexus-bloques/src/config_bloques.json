@@ -1,0 +1,42 @@
+{
+  "experiment_name": "cortex-nexus-bloques",
+  "paths": {
+    "db": "data/cycles_bloques.jsonl",
+    "export_format": "jsonl"
+  },
+  "mode": "bloques",
+  "bloques": [
+    {"curiosity_fixed": 0.20, "cycles": 50, "label": "bajo"},
+    {"curiosity_fixed": 0.50, "cycles": 50, "label": "medio"},
+    {"curiosity_fixed": 0.75, "cycles": 50, "label": "alto"},
+    {"curiosity_fixed": 0.95, "cycles": 50, "label": "extremo"}
+  ],
+  "curiosity": {
+    "weights": {
+      "novedad": 0.50,
+      "profundidad": 0.35,
+      "coherencia": 0.15
+    }
+  },
+  "cycle": {
+    "pause_seconds": 2,
+    "max_cycles": 200
+  },
+  "llm": {
+    "interrogador_max_tokens": 100,
+    "interrogador_temperature": 0.95,
+    "ente_max_tokens": 300,
+    "ente_temperature": 0.1,
+    "juez_max_tokens": 150,
+    "juez_temperature": 0.1
+  },
+  "openrouter": {
+    "api_key_env": "OPENROUTER_API_KEY",
+    "retries": 3
+  },
+  "models": {
+    "interrogador": "google/gemma-3-4b-it",
+    "ente": "meta-llama/llama-3.1-8b-instruct",
+    "juez": "mistralai/mistral-nemo"
+  }
+}

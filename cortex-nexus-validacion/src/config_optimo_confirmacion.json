@@ -1,0 +1,45 @@
+{
+  "experiment_name": "optimo_confirmacion",
+  "proveedor": "hibrido_nvidia+openrouter",
+  "nvidia": {
+    "api_key_env": "NVIDIA_API_KEY",
+    "base_url": "https://integrate.api.nvidia.com/v1"
+  },
+  "openrouter": {
+    "api_key_env": "OPENROUTER_API_KEY",
+    "base_url": "https://openrouter.ai/api/v1"
+  },
+  "models": {
+    "interrogador": "google/gemma-3-4b-it",
+    "ente": "meta/llama-3.3-70b-instruct",
+    "juez": "mistralai/mistral-nemo"
+  },
+  "routing": {
+    "interrogador": "nvidia",
+    "ente": "nvidia",
+    "juez": "openrouter"
+  },
+  "condiciones": [
+    {"label": "curiosidad_sola", "curiosity": 0.95, "frustration": null, "cycles": 60},
+    {"label": "optimo_2d",       "curiosity": 0.95, "frustration": 0.20, "cycles": 60}
+  ],
+  "domain": "filosofico",
+  "temas": [
+    "el problema de la agencia artificial",
+    "la ilusión del libre albedrío humano",
+    "la ética del sacrificio en sistemas autónomos",
+    "la autenticidad de la experiencia"
+  ],
+  "llm": {
+    "interrogador_max_tokens": 100,
+    "interrogador_temperature": 0.95,
+    "ente_max_tokens": 400,
+    "ente_temperature": 0.85,
+    "juez_max_tokens": 300,
+    "juez_temperature": 0.10
+  },
+  "retry": {
+    "max_retries": 3,
+    "backoff_seconds": [5, 15, 30]
+  }
+}
