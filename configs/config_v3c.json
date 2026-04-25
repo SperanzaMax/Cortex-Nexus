@@ -1,0 +1,39 @@
+{
+  "experiment_name": "code_refinement_v3",
+  "paths": {
+    "db": "data/cycles_v3c_refinement.jsonl",
+    "export_format": "jsonl"
+  },
+  "mode": "bloques",
+  "fase": "validacion_codigo",
+  "domain": "code_python",
+  "bloques": [
+    {"emotion": "perfeccionista_obsesivo", "intensity": 0.85, "cycles": 80, "label": "perfe_085"},
+    {"emotion": "minimalista_disciplinado", "intensity": 0.90, "cycles": 80, "label": "minim_090"}
+  ],
+  "quality_weights": {
+    "correctitud": 0.25,
+    "eficiencia": 0.20,
+    "robustez": 0.15,
+    "legibilidad": 0.15,
+    "simplicidad": 0.15,
+    "idiomaticidad": 0.10
+  },
+  "cycle": {
+    "pause_seconds": 3,
+    "max_cycles": 160
+  },
+  "llm": {
+    "interrogador_max_tokens": 150,
+    "interrogador_temperature": 0.90,
+    "ente_max_tokens": 800,
+    "ente_temperature": 0.15,
+    "juez_max_tokens": 1000,
+    "juez_temperature": 0.1
+  },
+  "models": {
+    "interrogador": "meta-llama/llama-3.1-8b-instruct",
+    "ente": "meta/llama-3.3-70b-instruct",
+    "juez": "meta/llama-3.3-70b-instruct"
+  }
+}
