@@ -1,0 +1,40 @@
+{
+  "experiment_name": "perfeccionista_juez_experto_v4",
+  "paths": {
+    "db": "data/cycles_v4b_code.jsonl",
+    "export_format": "jsonl"
+  },
+  "domain": "code_python",
+  "mode": "bloques",
+  "fase": "validacion_codigo",
+  "models": {
+    "interrogador": "google/gemma-3-4b-it",
+    "ente": "meta/llama-3.3-70b-instruct",
+    "juez": "qwen/qwen-2.5-72b-instruct"
+  },
+  "bloques": [
+    {"emotion": "perfeccionista_obsesivo", "intensity": 0.85, "cycles": 60, "label": "perfeccionista_085"},
+    {"emotion": "control_neutro", "intensity": 0.00, "cycles": 60, "label": "neutro"}
+  ],
+  "quality_weights": {
+    "correctitud": 0.25,
+    "eficiencia": 0.20,
+    "robustez": 0.15,
+    "legibilidad": 0.15,
+    "simplicidad": 0.15,
+    "idiomaticidad": 0.10
+  },
+  "cycle": {
+    "pause_seconds": 15,
+    "max_cycles": 120
+  },
+  "llm": {
+    "interrogador_max_tokens": 150,
+    "interrogador_temperature": 0.90,
+    "ente_max_tokens": 800,
+    "ente_temperature": 0.15,
+    "juez_max_tokens": 1000,
+    "juez_temperature": 0.1
+  },
+  "self_refinement": true
+}

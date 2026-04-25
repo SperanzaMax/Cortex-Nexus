@@ -1,0 +1,41 @@
+{
+  "experiment_name": "codigo_nuevas_emociones_v5",
+  "paths": {
+    "db": "data/cycles_v5c_code.jsonl",
+    "export_format": "jsonl"
+  },
+  "domain": "code_python",
+  "mode": "comparativo",
+  "fase": "nuevas_emociones_codigo",
+  "models": {
+    "interrogador": "google/gemma-3-4b-it",
+    "ente": "meta/llama-3.3-70b-instruct",
+    "juez": "qwen/qwen-2.5-72b-instruct"
+  },
+  "bloques": [
+    {"emotion": "maestria_tecnica",        "intensity": 0.85, "cycles": 50, "label": "maestria_085"},
+    {"emotion": "precision_algoritmica",   "intensity": 0.85, "cycles": 50, "label": "precision_085"},
+    {"emotion": "perfeccionista_obsesivo", "intensity": 0.85, "cycles": 30, "label": "perfeccionista_085_baseline"}
+  ],
+  "quality_weights": {
+    "correctitud":   0.25,
+    "eficiencia":    0.20,
+    "robustez":      0.15,
+    "legibilidad":   0.15,
+    "simplicidad":   0.15,
+    "idiomaticidad": 0.10
+  },
+  "cycle": {
+    "pause_seconds": 15,
+    "max_cycles": 130
+  },
+  "llm": {
+    "interrogador_max_tokens": 150,
+    "interrogador_temperature": 0.90,
+    "ente_max_tokens": 800,
+    "ente_temperature": 0.15,
+    "juez_max_tokens": 1000,
+    "juez_temperature": 0.10
+  },
+  "self_refinement": true
+}

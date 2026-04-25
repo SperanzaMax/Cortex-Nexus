@@ -1,0 +1,38 @@
+{
+  "experiment_name": "concentracion_bloques_v4",
+  "paths": {
+    "db": "data/cycles_v4a_tecnico.jsonl",
+    "export_format": "jsonl"
+  },
+  "domain": "tecnico",
+  "mode": "bloques",
+  "fase": "validacion_tecnica",
+  "models": {
+    "interrogador": "google/gemma-3-4b-it",
+    "ente": "meta/llama-3.3-70b-instruct",
+    "juez": "mistralai/mistral-nemo"
+  },
+  "bloques": [
+    {"emotion": "concentracion", "intensity": 0.20, "cycles": 40, "label": "bajo"},
+    {"emotion": "concentracion", "intensity": 0.50, "cycles": 40, "label": "medio"},
+    {"emotion": "concentracion", "intensity": 0.75, "cycles": 40, "label": "alto"},
+    {"emotion": "concentracion", "intensity": 0.95, "cycles": 40, "label": "extremo"}
+  ],
+  "quality_weights": {
+    "precision": 0.45,
+    "completitud": 0.35,
+    "claridad": 0.20
+  },
+  "cycle": {
+    "pause_seconds": 15,
+    "max_cycles": 160
+  },
+  "llm": {
+    "interrogador_max_tokens": 150,
+    "interrogador_temperature": 0.90,
+    "ente_max_tokens": 800,
+    "ente_temperature": 0.15,
+    "juez_max_tokens": 1000,
+    "juez_temperature": 0.1
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "experiment_name": "concentracion_medio_validacion_v5",
+  "paths": {
+    "db": "data/cycles_v5a_tecnico.jsonl",
+    "export_format": "jsonl"
+  },
+  "domain": "tecnico",
+  "mode": "comparativo",
+  "fase": "validacion_estadistica",
+  "models": {
+    "interrogador": "google/gemma-3-4b-it",
+    "ente": "meta/llama-3.3-70b-instruct",
+    "juez": "mistralai/mistral-nemo"
+  },
+  "bloques": [
+    {"emotion": "concentracion", "intensity": 0.50, "cycles": 100, "label": "medio_050"},
+    {"emotion": "control_neutro", "intensity": 0.00, "cycles":  25, "label": "control"}
+  ],
+  "quality_weights": {
+    "precision":    0.45,
+    "completitud":  0.35,
+    "claridad":     0.20
+  },
+  "cycle": {
+    "pause_seconds": 15,
+    "max_cycles": 125
+  },
+  "llm": {
+    "interrogador_max_tokens": 150,
+    "interrogador_temperature": 0.90,
+    "ente_max_tokens": 800,
+    "ente_temperature": 0.15,
+    "juez_max_tokens": 1000,
+    "juez_temperature": 0.10
+  }
+}
