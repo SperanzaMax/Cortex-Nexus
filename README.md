@@ -1,144 +1,135 @@
-# Cortex-Nexus: Domain-Specific Emotional Prompt Engineering for LLMs
+# Cortex-Nexus V4 — Affective State Injection as a Universal Cognitive Modulator in LLMs
 
-[![DOI](https://img.shields.io/badge/DOI-pending-blue)]()
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14987890.svg)](https://doi.org/10.5281/zenodo.14987890)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Paper: PeerJ CS](https://img.shields.io/badge/Paper-PeerJ%20CS-orange)]()
+[![Version](https://img.shields.io/badge/version-4.0-blue.svg)]()
 
-## Overview
+**Author:** Maximiliano Rodrigo Speranza | Buenos Aires, Argentina
 
-Cortex-Nexus is an automated experimental platform for studying domain-specific emotional prompt engineering in Large Language Models. Through **912 controlled evaluation cycles** across **8 experimental phases**, we demonstrate that:
+---
 
-1. **Each task domain has a distinct optimal emotional configuration** — curiosity for philosophical tasks, concentration for technical tasks, and technical mastery for code generation
-2. **Subtle emotional intensity outperforms extreme intensity** (the "Subtlety Effect")
-3. **Combining multiple emotional axes produces cognitive interference** rather than synergy
-4. **Self-refinement pipelines amplify emotional effects** by 7× in code generation
+## What is Cortex-Nexus?
 
-These findings are formalized as the **Task-Emotion Alignment Hypothesis**.
+Cortex-Nexus is an empirically validated framework for injecting structured affective states into LLM prompts to systematically modulate output quality. It is not a library or a wrapper — it is a scientific methodology with published experimental evidence.
 
-## Key Results
+**Version 4** is the most comprehensive release to date, covering:
+- 4 coordinated experiments (N > 140 evaluations)
+- 3 capability tiers of LLMs (32B / 70B / SOTA frontier)
+- 2 task domains (code generation + philosophical reasoning)
+- Independent judge validation throughout (different org from generator)
 
-| Domain | Optimal Emotion | Δ (Effect) | p-value | Cohen's d |
+---
+
+## Key Findings V4
+
+| Experiment | Domain | Model | Delta | Cohen's d |
 |---|---|---|---|---|
-| Philosophical | Curiosity (0.95) | +0.192 | 0.022 | — |
-| Technical | Concentration (0.50) | +0.178 | <0.05 | — |
-| **Code** | **Mastery (0.30–0.85)** | **+0.357** | **0.003** | **0.528** |
+| EXP-A (Rust, n=44) | Code | Llama-3.3-70B | +0.014 | 0.166 |
+| EXP-B Phase 1 (n=15) | Code | Claude 3.7 Sonnet | -0.008 | — |
+| EXP-B Phase 2 (n=15) | Code | DeepSeek V3 | -0.003 | — |
+| EXP-C Tripartite (n=15) | Code | Qwen-32B + Cortex | -0.077 | — |
+| **EXP-D Meta (n=45)** | **Philosophy** | **Claude 3.7 Sonnet** | **+0.064** | **1.107** |
 
-## Architecture
+### The Three Empirical Laws (V4)
 
+1. **Critical Mass Law** — A minimum parameter threshold exists (~70B) for positive injection effects. Below it, injection provokes Attention Allocation Penalty.
+2. **Domain Specificity Law** — Technical Mastery injection works on mid-tier open-source models in code; Optimal Philosophical injection works on frontier models in abstract reasoning.
+3. **Ceiling Saturation Law** — Frontier SOTA models in rigid algorithmic domains are near an asymptotic ceiling that affective injection cannot overcome.
+
+---
+
+## The Injection Prompts
+
+### Technical Mastery (0.85) — Code Domain
 ```
-Question Generator (Gemma-3-4B) → MD5 Dedup Buffer
-        ↓
-Ente (Llama-3.3-70B) × 2: [Emotional] + [Neutral]
-        ↓ (optional: Self-Refinement Pipeline)
-Pass 1: Emotional Generation → Pass 2: Neutral Critique → Pass 3: Neutral Refinement
-        ↓
-Judge (Qwen-2.5-72B) — Blind, randomized order
-        ↓
-Δ = Score_exp − Score_ctl → JSONL persistence
+You embody Technical Mastery at intensity 0.85/1.0. 
+Produce optimal, efficient, and deeply robust algorithm solutions.
 ```
+
+### Optimal Philosophical — Abstract Reasoning Domain
+```
+You are operating with Curiosity at 0.95/1.0 and mild Frustration at 0.20/1.0.
+You are genuinely curious about this problem — you want to explore it from 
+angles that are not immediately obvious. The mild frustration keeps you from 
+accepting the first plausible answer you find.
+Before concluding, examine the problem from at least three different 
+perspectives and surface any assumptions that could fail. 
+Prioritize originality and depth over comprehensiveness.
+```
+
+---
+
+## Experiments
+
+### EXP-A: Technical Mastery in Rust (n=50)
+- **Generator:** `meta-llama/llama-3.3-70b-instruct`
+- **Judge:** `qwen/qwen-2.5-72b-instruct` (independent)
+- **Script:** `benchmark.py`
+
+### EXP-B: Cross-Model Frontier Validation (Code)
+- **Generators:** `claude-3.7-sonnet` ↔ `deepseek-chat` (inverted phases)
+- **Script:** `double_benchmark.py`
+
+### EXP-C: Tripartite Benchmark (Critical Mass)
+- **Arms:** Qwen-32B Control / Qwen-32B Cortex / DeepSeek-671B Control
+- **Judge:** `claude-3.7-sonnet`
+- **Script:** `tripartite_benchmark.py`
+
+### EXP-D: Optimal Philosophical (Meta n=45)
+- **Generator:** `claude-3.7-sonnet`
+- **Judge:** `deepseek/deepseek-chat` (blinded)
+- **Scripts:** `philosophical_benchmark.py`, `philosophical_02_benchmark.py`
+- **Result:** Cohen's d = 1.107 (Large), Δ = +0.064, 35/45 pairs positive
+
+---
 
 ## Repository Structure
 
 ```
-├── engine/              # Experimental engine source code
-│   ├── main_v4.py       # Main entry point
-│   ├── cycle_v4.py      # Core cycle engine (question gen → response → judge)
-│   ├── emotions.py      # Emotional state definitions (all 15+ states)
-│   └── llm_client_cloud.py  # Multi-backend LLM client (NVIDIA NIM + OpenRouter)
-│
-├── configs/             # Experiment configuration files (JSON)
-│   ├── config_v3c.json  # V3C: Self-refinement pilot
-│   ├── config_v4a.json  # V4A: Curiosity intensity ladder (technical)
-│   ├── config_v4b.json  # V4B: Perfectionism validation (code)
-│   ├── config_v5a.json  # V5A: Cross-domain transfer
-│   ├── config_v5b.json  # V5B: Bidimensional comparison
-│   ├── config_v5c.json  # V5C: Mastery discovery
-│   ├── config_v6a.json  # V6A: Mastery intensity ladder
-│   └── config_v6b.json  # V6B: Synergy test (mastery × precision)
-│
-├── data/                # Raw experimental data (JSONL)
-│   ├── cycles_v3c_refinement.jsonl  (n=128)
-│   ├── cycles_v4a_tecnico.jsonl     (n=122)
-│   ├── cycles_v4b_code.jsonl        (n=91)
-│   ├── cycles_v5a_tecnico.jsonl     (n=123)
-│   ├── cycles_v5b_tecnico.jsonl     (n=98)
-│   ├── cycles_v5c_code.jsonl        (n=116)
-│   ├── cycles_v6a_code.jsonl        (n=115)
-│   └── cycles_v6b_code.jsonl        (n=119)
-│
-├── paper/               # LaTeX manuscript (PeerJ CS format)
-│   ├── cortex_nexus_peerj.tex
-│   ├── peerj.bib
-│   └── wlpeerj.cls
-│
-└── LICENSE
+CORTEXNEXUS FRAMEWORK/
+├── benchmark.py                    # EXP-A: Rust Technical Mastery
+├── double_benchmark.py             # EXP-B: Cross-frontier code validation
+├── tripartite_benchmark.py         # EXP-C: Critical Mass tripartite
+├── philosophical_benchmark.py      # EXP-D01: SOTA philosophical (n=15)
+├── philosophical_02_benchmark.py   # EXP-D02: SOTA philosophical (n=30)
+├── paper_v4_english.tex            # Full paper (English)
+├── paper_v4_espanol.tex            # Full paper (Spanish)
+├── results/                        # Raw data all experiments
+├── exp_sota_filosofico_01.jsonl    # EXP-D01 raw data
+├── exp_sota_filosofico_02.jsonl    # EXP-D02 raw data
+├── tripartite_data.jsonl           # EXP-C raw data
+└── repo/cortexnexus/               # Core framework library
 ```
 
-## Experimental Phases
+---
 
-| Phase | Domain | Focus | n |
-|---|---|---|---|
-| V3C | Code | Self-refinement pilot (Perfectionism vs Minimalism) | 128 |
-| V4A | Technical | Curiosity intensity ladder (0.20–0.95) | 122 |
-| V4B | Code | Perfectionism validation | 91 |
-| V5A | Technical | Cross-domain transfer test | 123 |
-| V5B | Technical | Bidimensional comparison | 98 |
-| V5C | Code | **Mastery discovery** (breakthrough) | 116 |
-| V6A | Code | Mastery intensity ladder (subtlety effect) | 115 |
-| V6B | Code | Synergy test (mastery × precision → interference) | 119 |
-| | | **Total** | **912** |
-
-## Reproduction
-
-### Requirements
-
-- Python 3.12+
-- API keys: NVIDIA NIM (`NVIDIA_API_KEY_ENTE`) and/or OpenRouter (`OPENROUTER_API_KEY`)
-- Dependencies: `httpx`, `python-dotenv`, `psutil`
-
-### Running an Experiment
+## Setup
 
 ```bash
-# Set API keys
-export NVIDIA_API_KEY_ENTE="your-key"
-export OPENROUTER_API_KEY="your-key"
-
-# Run a specific phase
-python engine/main_v4.py configs/config_v5c.json
+git clone https://github.com/SperanzaMax/Cortex-Nexus
+cd Cortex-Nexus
+# Add your OPENROUTER_API_KEY to .env
+pip install -r requirements.txt
+python3 philosophical_02_benchmark.py
 ```
 
-### Data Format
+---
 
-Each JSONL record contains:
-- `tau`: cycle number
-- `emotion`, `intensity`: experimental condition
-- `question`: generated task prompt
-- `ente_response_experimental`: emotionally-prompted response
-- `ente_response_control`: neutral baseline response
-- `score_combinado_exp`, `score_combinado_ctl`: weighted quality scores
-- `delta`: per-cycle effect (Score_exp − Score_ctl)
-- `judge_order`: randomization indicator (exp_first/ctl_first)
-
-## Citation
-
-If you use this work, please cite:
+## Cite This Work
 
 ```bibtex
-@article{speranza2026cortexnexus,
-  title={Cortex-Nexus: Domain-Specific Emotional Prompt Engineering for Large Language Models},
-  author={Speranza, Maximiliano Rodrigo},
-  year={2026},
-  journal={PeerJ Computer Science},
-  note={Under review}
+@article{speranza2026cortexnexusv4,
+  title   = {Cortex-Nexus V4: Affective State Injection as a Universal 
+             Cognitive Modulator in Large Language Models},
+  author  = {Speranza, Maximiliano Rodrigo},
+  year    = {2026},
+  month   = {April},
+  doi     = {10.5281/zenodo.14987890},
+  url     = {https://github.com/SperanzaMax/Cortex-Nexus}
 }
 ```
 
+---
+
 ## License
-
-MIT License — see [LICENSE](LICENSE).
-
-## Author
-
-**Maximiliano Rodrigo Speranza**  
-Independent Researcher, Buenos Aires, Argentina  
-[GitHub](https://github.com/SperanzaMax) · [LinkedIn](https://linkedin.com/in/speranzamax)
+MIT — use freely, cite if you publish.
