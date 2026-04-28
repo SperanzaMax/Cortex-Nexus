@@ -38,6 +38,34 @@ Cortex-Nexus is an empirically validated framework for injecting structured affe
 
 ---
 
+## Experiments
+
+### EXP-A: Technical Mastery in Rust (n=50)
+- **Generator:** `meta-llama/llama-3.3-70b-instruct`
+- **Judge:** `qwen/qwen-2.5-72b-instruct` (independent)
+- **Script:** `benchmark.py`
+- **Data:** `results/Estudio_Riguroso_V2_*/raw_data_rust.jsonl`
+
+### EXP-B: Cross-Model Frontier Validation (Code)
+- **Generators:** `claude-3.7-sonnet` ↔ `deepseek-chat` (inverted)
+- **Script:** `double_benchmark.py`
+- **Data:** `frontier_status.json`
+
+### EXP-C: Tripartite Benchmark (Critical Mass)
+- **Arms:** Qwen-32B Control / Qwen-32B Cortex / DeepSeek-671B Control
+- **Judge:** `claude-3.7-sonnet`
+- **Script:** `tripartite_benchmark.py`
+- **Data:** `tripartite_data.jsonl`
+
+### EXP-D: Optimal Philosophical (EXP-SOTA-01 + EXP-SOTA-02)
+- **Generator:** `claude-3.7-sonnet`
+- **Judge:** `deepseek/deepseek-chat` (independent, blinded)
+- **Scripts:** `philosophical_benchmark.py`, `philosophical_02_benchmark.py`
+- **Data:** `exp_sota_filosofico_01.jsonl`, `exp_sota_filosofico_02.jsonl`
+- **Result:** Cohen's d = 1.107 (Large), Δ = +0.064, 35/45 pairs positive
+
+---
+
 ## The Injection Prompts
 
 ### Technical Mastery (0.85) — Code Domain
@@ -59,30 +87,6 @@ Prioritize originality and depth over comprehensiveness.
 
 ---
 
-## Experiments
-
-### EXP-A: Technical Mastery in Rust (n=50)
-- **Generator:** `meta-llama/llama-3.3-70b-instruct`
-- **Judge:** `qwen/qwen-2.5-72b-instruct` (independent)
-- **Script:** `benchmark.py`
-
-### EXP-B: Cross-Model Frontier Validation (Code)
-- **Generators:** `claude-3.7-sonnet` ↔ `deepseek-chat` (inverted phases)
-- **Script:** `double_benchmark.py`
-
-### EXP-C: Tripartite Benchmark (Critical Mass)
-- **Arms:** Qwen-32B Control / Qwen-32B Cortex / DeepSeek-671B Control
-- **Judge:** `claude-3.7-sonnet`
-- **Script:** `tripartite_benchmark.py`
-
-### EXP-D: Optimal Philosophical (Meta n=45)
-- **Generator:** `claude-3.7-sonnet`
-- **Judge:** `deepseek/deepseek-chat` (blinded)
-- **Scripts:** `philosophical_benchmark.py`, `philosophical_02_benchmark.py`
-- **Result:** Cohen's d = 1.107 (Large), Δ = +0.064, 35/45 pairs positive
-
----
-
 ## Repository Structure
 
 ```
@@ -94,7 +98,9 @@ CORTEXNEXUS FRAMEWORK/
 ├── philosophical_02_benchmark.py   # EXP-D02: SOTA philosophical (n=30)
 ├── paper_v4_english.tex            # Full paper (English)
 ├── paper_v4_espanol.tex            # Full paper (Spanish)
-├── results/                        # Raw data all experiments
+├── results/
+│   ├── Estudio_Riguroso_V2_*/      # EXP-A raw data
+│   └── Reporte_Frontera_MultiModelo.txt
 ├── exp_sota_filosofico_01.jsonl    # EXP-D01 raw data
 ├── exp_sota_filosofico_02.jsonl    # EXP-D02 raw data
 ├── tripartite_data.jsonl           # EXP-C raw data
@@ -107,7 +113,8 @@ CORTEXNEXUS FRAMEWORK/
 
 ```bash
 git clone https://github.com/SperanzaMax/Cortex-Nexus
-cd Cortex-Nexus
+cd Cortex-Nexus/CORTEXNEXUS\ FRAMEWORK
+cp .env.example .env
 # Add your OPENROUTER_API_KEY to .env
 pip install -r requirements.txt
 python3 philosophical_02_benchmark.py
