@@ -1,6 +1,6 @@
 # Cortex-Nexus V4 — La Inyección de Estados Afectivos como Modulador Cognitivo Universal en LLMs
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14987890.svg)](https://doi.org/10.5281/zenodo.14987890)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19865232.svg)](https://doi.org/10.5281/zenodo.19865232)
 [![Licencia: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Versión](https://img.shields.io/badge/version-4.0-blue.svg)]()
 

@@ -1,6 +1,6 @@
 # Cortex-Nexus V4 — Affective State Injection as a Universal Cognitive Modulator in LLMs
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14987890.svg)](https://doi.org/10.5281/zenodo.14987890)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19865232.svg)](https://doi.org/10.5281/zenodo.19865232)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-4.0-blue.svg)]()
 
@@ -124,7 +124,7 @@ python3 philosophical_02_benchmark.py
   author  = {Speranza, Maximiliano Rodrigo},
   year    = {2026},
   month   = {April},
-  doi     = {10.5281/zenodo.14987890},
+  doi     = {10.5281/zenodo.19865232},
   url     = {https://github.com/SperanzaMax/Cortex-Nexus}
 }
 ```
