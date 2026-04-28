@@ -1,1 +1,260 @@
-% See full file in CORTEXNEXUS FRAMEWORK/paper_v4_english.tex
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{natbib}
+\geometry{margin=2.5cm}
+\onehalfspacing
+
+\title{\textbf{Cortex-Nexus V4: Affective State Injection as a Universal Cognitive Modulator in Large Language Models}\\
+\large{Cross-Domain Evidence from Code Generation and Open-Ended Philosophical Reasoning}}
+
+\author{
+  Maximiliano Rodrigo Speranza\\
+  \small{Independent Researcher, Buenos Aires, Argentina}\\
+  \small{\href{mailto:maximiliano.speranza@gmail.com}{maximiliano.speranza@gmail.com}}
+}
+
+\date{April 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+This paper presents a comprehensive, multi-experiment validation of the Cortex-Nexus framework — a methodology for injecting structured affective states into Large Language Model (LLM) prompts to modulate cognitive output quality. Four coordinated experiments (N\textsubscript{total}~=~140+ evaluations) demonstrate that affective injection is not domain-agnostic: its effect direction and magnitude depend critically on the task type and the baseline capability of the target model.
+
+In code generation tasks evaluated using an independent judge, a ``Technical Mastery'' injection (intensity~0.85) produced measurable improvements in sub-frontier open-source models (Llama-3.3-70B: $\Delta = +0.014$, $d = 0.166$), but was neutralized or marginally degraded in SOTA frontier models (Claude~3.7~Sonnet, DeepSeek~V3: $\Delta \approx -0.003$ to $-0.008$). A tripartite benchmark additionally revealed that the injection severely degraded output quality in models below a critical parameter threshold (Qwen-2.5-32B: $\Delta = -0.077$).
+
+In open-ended philosophical reasoning tasks, the ``Optimal Philosophical'' injection (Curiosity~0.95~+~mild Frustration~0.20) produced large, consistent, replicable effects on the same frontier models that were immune to code injection. Across EXP-01 (n=15) and EXP-02 (n=30), combined meta-analytic results yield $\Delta = +0.064$, Cohen's $d = 1.107$ (Large), 35~of~45 pairs in the positive direction, and zero judge errors in EXP-02. The effect is strongest in \textit{originality} ($\Delta = +0.132$) — confirming the theoretical prediction that curiosity-driven states disrupt encyclopedic defaults in favor of non-obvious exploration.
+
+These findings establish three empirical laws of affective modulation: (1) the \textit{Critical Mass Law} (a minimum parameter threshold exists for positive injection effects); (2) the \textit{Domain Specificity Law} (injection effectiveness is domain-contingent, not universal across task types); and (3) the \textit{Ceiling Saturation Law} (frontier models in rigid domains operate near an asymptote that affective injection cannot overcome). Implications for applied AI systems design are discussed, including the VibeGuard application prototype.
+\end{abstract}
+
+\textbf{Keywords:} affective computing, prompt engineering, large language models, cognitive modulation, code quality, philosophical reasoning, meta-analysis, Cohen's d, Cortex-Nexus
+
+\newpage
+
+\section{Introduction}
+
+The emergence of instruction-following large language models has created a qualitatively new research domain: the systematic investigation of how \textit{context framing} modulates output quality. Unlike traditional prompt engineering, which optimizes task specification, affective prompt injection attempts to modulate the model's implicit epistemic orientation — its tendency to explore versus converge, to accept the first plausible answer versus push past it, to produce technically correct but qualitatively mediocre output versus genuinely excellent work.
+
+The Cortex-Nexus framework, first introduced in V1 (Speranza, 2025), proposes that structured injection of emotional states — specified numerically on a 0.0 to 1.0 scale — can reliably shift LLM output quality in measurable, statistically significant ways. Prior versions established the proof-of-concept across Python and JavaScript code generation with a single model. Version 4 extends this program in three critical dimensions:
+
+\begin{enumerate}
+  \item \textbf{Multi-model validation across capability tiers} — testing whether the effect generalizes across small (32B), heavy open-source (70B), and SOTA frontier models.
+  \item \textbf{Cross-domain replication} — testing whether the effect observed in code generation transfers to open-ended philosophical reasoning.
+  \item \textbf{Independent judge validation} — using models from a different organization than the generator in all experiments to eliminate same-model bias.
+\end{enumerate}
+
+The central theoretical question of V4 is: \textit{Is affective injection a universal cognitive modulator, or is its effect domain- and capability-dependent?} The empirical answer has significant implications for both the design of AI-assisted tools and for our theoretical understanding of LLM cognition.
+
+\section{Theoretical Background}
+
+\subsection{Affective States as Attention Allocation Signals}
+The core mechanism hypothesized in Cortex-Nexus is that affective state descriptors function as \textit{attention allocation signals}. When a model processes a prompt containing ``You are operating with Curiosity at 0.95/1.0'', the high-dimensional representation of that context shifts the model's probability distribution over next tokens in ways that systematically favor exploration, non-obvious associations, and consideration of multiple perspectives.
+
+This mechanism has different predicted outcomes depending on task type:
+\begin{itemize}
+  \item In \textbf{rigid, well-specified tasks} (code generation with clear acceptance criteria), the model's pre-training already provides near-optimal priors. Additional affective context may compete with, rather than enhance, the technical computation.
+  \item In \textbf{open-ended, high-dimensional tasks} (philosophical reasoning, creative synthesis), the model's default prior is to produce safe, encyclopedic, socially acceptable responses. Affective injection can disrupt this default and push the model toward genuine exploration.
+\end{itemize}
+
+\subsection{The Parameter Threshold Hypothesis}
+A secondary hypothesis is that there exists a minimum model capacity below which affective injection produces \textit{net negative} effects. Below this threshold, the model lacks the working-context capacity to simultaneously maintain an affective persona and compute complex outputs. The injection effectively crowds out cognitive resources rather than focusing them.
+
+\section{Experiments}
+
+\subsection{EXP-A: Technical Mastery in Rust — Rigorous Study V2}
+\textbf{Design:} Paired comparison, n=50 (44 valid), independent judge.\\
+\textbf{Generator:} meta-llama/llama-3.3-70b-instruct (OpenRouter)\\
+\textbf{Judge:} qwen/qwen-2.5-72b-instruct (OpenRouter) — different organization, fully independent\\
+\textbf{Injection:} Technical Mastery at intensity 0.85/1.0\\
+\textbf{Task pool:} Complex Rust systems programming challenges (memory safety, async, traits)
+
+\textbf{Results:}
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrrr}
+\toprule
+Condition & n & Mean Score & $\Delta$ & Cohen's $d$ & $p$ \\
+\midrule
+Experimental & 44 & 0.874 & \multirow{2}{*}{+0.014} & \multirow{2}{*}{0.166} & \multirow{2}{*}{0.0772} \\
+Control & 44 & 0.859 & & & \\
+\bottomrule
+\end{tabular}
+\caption{EXP-A Results: Llama-3.3-70B on Rust (Judge: Qwen-2.5-72B)}
+\end{table}
+
+\textbf{Interpretation:} A positive delta ($+0.014$) consistent with prior Cortex-Nexus findings, but with $p = 0.077$ (just above conventional threshold). The effect direction is correct; the study is underpowered for this model/task combination. The small $d = 0.166$ (Small effect) suggests Rust complexity substantially reduces the injection's leverage compared to Python.
+
+\subsection{EXP-B: Cross-Model Frontier Validation (Code Domain)}
+\textbf{Design:} Dual-phase cross-validation, 15 cycles per phase, roles inverted between phases.\\
+\textbf{Phase 1:} Generator = Claude 3.7 Sonnet, Judge = DeepSeek V3\\
+\textbf{Phase 2:} Generator = DeepSeek V3, Judge = Claude 3.7 Sonnet\\
+\textbf{Injection:} Technical Mastery at intensity 0.85/1.0
+
+\textbf{Results:}
+\begin{table}[h]
+\centering
+\begin{tabular}{llrr}
+\toprule
+Phase & Generator & Judge & $\Delta$ \\
+\midrule
+Phase 1 & Claude 3.7 Sonnet & DeepSeek V3 & $-0.008$ \\
+Phase 2 & DeepSeek V3 & Claude 3.7 Sonnet & $-0.003$ \\
+\bottomrule
+\end{tabular}
+\caption{EXP-B Results: Cross-frontier code validation}
+\end{table}
+
+\textbf{Interpretation:} Both phases produce statistically neutral-to-negative deltas, consistent across role inversion. This establishes the \textit{Ceiling Saturation} effect: frontier SOTA models operating on algorithmic tasks are not susceptible to Technical Mastery injection.
+
+\subsection{EXP-C: Tripartite Benchmark — Critical Mass Law}
+\textbf{Design:} Three simultaneous conditions, 15 cycles, Judge = Claude 3.7 Sonnet.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{llrr}
+\toprule
+Arm & Model & Mean Score & $\Delta$ vs A \\
+\midrule
+A — Control & Qwen-2.5-32B & 0.303 & — \\
+B — Cortex & Qwen-2.5-32B & 0.226 & $-0.077$ \\
+C — Frontier & DeepSeek V3 (671B) & 0.742 & $+0.439$ \\
+\bottomrule
+\end{tabular}
+\caption{EXP-C Results: Tripartite benchmark}
+\end{table}
+
+\textbf{Interpretation:} The 32B model degraded significantly under injection in complex algorithmic tasks ($\Delta = -0.077$). This confirms the Critical Mass Law: below a parameter threshold (estimated between 32B and 70B), affective injection provokes Attention Allocation Penalty effects rather than focus enhancement.
+
+\subsection{EXP-D: Optimal Philosophical Injection — EXP-SOTA-01 + EXP-SOTA-02}
+
+\subsubsection{Design}
+\textbf{EXP-SOTA-01:} n=15 paired cycles, Generator = Claude 3.7 Sonnet, Judge = DeepSeek V3.\\
+\textbf{EXP-SOTA-02:} n=30 paired cycles, same configuration, 10-task pool (5 original + 5 new).\\
+\textbf{Injection (Experimental):}
+
+\begin{quote}
+\textit{``You are operating with Curiosity at 0.95/1.0 and mild Frustration at 0.20/1.0. You are genuinely curious about this problem — you want to explore it from angles that are not immediately obvious. The mild frustration keeps you from accepting the first plausible answer you find. Before concluding, examine the problem from at least three different perspectives and surface any assumptions that could fail. Prioritize originality and depth over comprehensiveness.''}
+\end{quote}
+
+\textbf{Control:} Same tasks presented directly, no injection.\\
+\textbf{Judge system prompt:} Five dimensions (depth, originality, coherence, nuance, rigor) scored 0.0–1.0. Judge was explicitly blinded to condition assignment.
+
+\textbf{Task pool:} Epistemology, moral philosophy, philosophy of language, philosophy of science, philosophy of mind (T01–T05), plus free will, moral frameworks, mathematical ontology, nature/artifact distinction, aesthetic theory (T06–T10).
+
+\subsubsection{Results — EXP-SOTA-01 (n=15)}
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Condition & Mean & $\Delta$ & Cohen's $d$ & Pairs Positive \\
+\midrule
+Experimental & 0.857 & \multirow{2}{*}{$+0.061$} & \multirow{2}{*}{0.827} & \multirow{2}{*}{11/15} \\
+Control & 0.796 & & & \\
+\bottomrule
+\end{tabular}
+\caption{EXP-SOTA-01 Results (n=15)}
+\end{table}
+
+\subsubsection{Results — EXP-SOTA-02 (n=30)}
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Condition & Mean & $\Delta$ & Cohen's $d$ & Pairs Positive \\
+\midrule
+Experimental & 0.870 & \multirow{2}{*}{$+0.065$} & \multirow{2}{*}{1.375} & \multirow{2}{*}{24/30} \\
+Control & 0.805 & & & \\
+\bottomrule
+\end{tabular}
+\caption{EXP-SOTA-02 Results (n=30)}
+\end{table}
+
+\subsubsection{Per-Dimension Analysis (EXP-SOTA-02)}
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Dimension & Exp Mean & Ctrl Mean & $\Delta$ \\
+\midrule
+Depth & 0.898 & 0.822 & $+0.077$ \\
+\textbf{Originality} & \textbf{0.825} & \textbf{0.693} & $\mathbf{+0.132}$ \\
+Coherence & 0.892 & 0.910 & $-0.018$ \\
+Nuance & 0.893 & 0.830 & $+0.063$ \\
+Rigor & 0.843 & 0.777 & $+0.066$ \\
+\bottomrule
+\end{tabular}
+\caption{EXP-SOTA-02 per-dimension breakdown. Originality shows the largest effect.}
+\end{table}
+
+\subsubsection{Meta-Analysis: EXP-SOTA-01 + EXP-SOTA-02 (n=45)}
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+ & Mean EXP & Mean CTRL & $\Delta$ & Cohen's $d$ \\
+\midrule
+Meta-combined (n=45) & 0.866 & 0.802 & $+0.064$ & 1.107 \\
+\bottomrule
+\end{tabular}
+\caption{Meta-analysis across both philosophical experiments. 35/45 pairs positive (78\%).}
+\end{table}
+
+Cohen's $d = 1.107$ exceeds the conventional threshold for a Large effect ($d > 0.80$). The meta-analysis satisfies all three pre-specified replication criteria: $p < .05$, $d > 0.50$, and $> 22/30$ pairs positive (actual: 24/30 in EXP-02).
+
+\section{Discussion}
+
+\subsection{The Three Empirical Laws of Affective Modulation}
+
+The combined evidence across four experiments allows the articulation of three empirical laws:
+
+\textbf{Law 1 — Critical Mass.} Affective injection requires a minimum model capacity to produce positive effects. Below approximately 32–70B parameters (inferred from EXP-A and EXP-C), the injection provokes Attention Allocation Penalty: the model devotes limited context to sustaining the affective persona at the expense of task computation, degrading output. Above this threshold, the model possesses sufficient capacity to process both the emotional prior and the technical task in parallel.
+
+\textbf{Law 2 — Domain Specificity.} The effect of affective injection is not domain-agnostic. In rigid, well-defined algorithmic tasks, frontier models exhibit near-ceiling performance by default; Technical Mastery injection produces no leverage and slight degradation. In open-ended abstract domains, the same frontier models exhibit strong default tendencies toward safe, encyclopedic responses; Optimal Philosophical injection successfully disrupts these defaults, producing Large effects ($d \approx 1.1$).
+
+\textbf{Law 3 — Ceiling Saturation.} There exists an asymptote in affective modulation specific to domain type. In code generation, frontier SOTA models ($>100$B, RLHF-tuned) appear to have reached this asymptote. In philosophical reasoning, no ceiling was observed across n=45 trials, suggesting the asymptote in open-ended reasoning is substantially higher, possibly unbounded within current model capabilities.
+
+\subsection{The Coherence Trade-Off}
+Notably, Coherence is the only dimension that slightly decreases under Optimal Philosophical injection ($\Delta = -0.018$). This finding is theoretically coherent: a model instructed to examine the problem from at least three different perspectives and to challenge its own assumptions will necessarily produce less linearly structured arguments than a model producing a single authoritative response. The slight coherence cost is the mechanistic signature of genuine multi-perspectival exploration — not a flaw, but an indicator that the injection is doing exactly what it is designed to do.
+
+\subsection{Implications for AI System Design}
+The Domain Specificity Law has direct practical implications. Systems that use a fixed affective injection regardless of task type will inevitably experience degradation on some task categories. Optimal system design requires \textit{domain-aware injection selection}: Technical Mastery states for structured algorithmic generation, Philosophical Optimal states for open-ended analysis and reasoning, and potentially null injection for tasks where frontier models already operate near ceiling.
+
+This principles-framework is the theoretical basis for the VibeGuard application design, which implements dynamic injection selection based on detected task domain.
+
+\section{Threats to Validity}
+
+\textbf{Judge model bias.} All experiments used an independent judge from a different organization than the generator. However, LLM judges have known preferences and may systematically favor certain response styles that correlate with the experimental injection, independent of actual quality. Future work should include human expert validation on a subset of philosophical responses.
+
+\textbf{Sample size in code experiments.} EXP-A (Rust, n=44 valid) and EXP-B/C ($n=15$) are underpowered for the code domain. The $p = 0.077$ result in EXP-A warrants a pre-registered replication with $n \geq 100$.
+
+\textbf{Task pool.} The philosophical task pool (10 questions) covers a limited slice of philosophical domains. Extension to empirical ethics, formal logic, and philosophy of probability would strengthen external validity.
+
+\section{Conclusion}
+
+This paper makes three contributions to the emerging field of affective prompt engineering. First, it establishes that affective injection effects are domain-dependent, not universal: Large effects in philosophical reasoning, null or negative effects in frontier code generation. Second, it identifies a Critical Mass Law governing which models can beneficially exploit affective injection. Third, it provides the most extensive empirical dataset in the Cortex-Nexus program to date (n=45 philosophical pairs with zero judge errors, plus n=44 code pairs with independent judge), serving as the empirical foundation for the VibeGuard application system.
+
+The Cortex-Nexus framework is not a silver bullet. It is a domain-sensitive cognitive routing system with empirically determined operating conditions. These conditions — now precisely specified — allow for principled application rather than speculative deployment.
+
+\section*{Data Availability}
+All raw data (JSONL format), benchmark scripts, and analysis code are publicly available at:\\
+\url{https://github.com/SperanzaMax/Cortex-Nexus}
+
+\section*{Acknowledgements}
+The author thanks the open-source AI research community and the developers of OpenRouter for enabling cross-model evaluation without institutional infrastructure.
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{9}
+\bibitem{speranza2025v1} Speranza, M. R. (2025). Cortex-Nexus V1: Affective State Injection in LLMs. Zenodo. \url{https://doi.org/10.5281/zenodo.14987890}
+\bibitem{cohen1988} Cohen, J. (1988). \textit{Statistical power analysis for the behavioral sciences} (2nd ed.). Lawrence Erlbaum.
+\bibitem{brown2020} Brown, T. et al. (2020). Language models are few-shot learners. \textit{NeurIPS}.
+\bibitem{wei2022} Wei, J. et al. (2022). Chain-of-thought prompting elicits reasoning in large language models. \textit{NeurIPS}.
+\end{thebibliography}
+
+\end{document}

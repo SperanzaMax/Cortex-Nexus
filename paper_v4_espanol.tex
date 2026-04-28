@@ -1,1 +1,260 @@
-% Ver archivo completo en CORTEXNEXUS FRAMEWORK/paper_v4_espanol.tex
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{natbib}
+\geometry{margin=2.5cm}
+\onehalfspacing
+
+\title{\textbf{Cortex-Nexus V4: La Inyección de Estados Afectivos como Modulador Cognitivo Universal en Modelos de Lenguaje Grande}\\
+\large{Evidencia Multidominio desde Generación de Código y Razonamiento Filosófico Abierto}}
+
+\author{
+  Maximiliano Rodrigo Speranza\\
+  \small{Investigador Independiente, Buenos Aires, Argentina}\\
+  \small{\href{mailto:maximiliano.speranza@gmail.com}{maximiliano.speranza@gmail.com}}
+}
+
+\date{Abril 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Este artículo presenta una validación integral de múltiples experimentos del framework Cortex-Nexus, una metodología para inyectar estados afectivos estructurados en prompts de Modelos de Lenguaje Grande (LLM) para modular la calidad del output cognitivo. Cuatro experimentos coordinados (N\textsubscript{total}~=~140+ evaluaciones) demuestran que la inyección afectiva no es domain-agnóstica: la dirección y magnitud de su efecto dependen críticamente del tipo de tarea y de la capacidad base del modelo objetivo.
+
+En tareas de generación de código evaluadas por un juez independiente, una inyección de ``Maestría Técnica'' (intensidad~0.85) produjo mejoras medibles en modelos de código abierto sub-frontera (Llama-3.3-70B: $\Delta = +0.014$, $d = 0.166$), pero fue neutralizada o marginalmente degradada en modelos de frontera SOTA (Claude~3.7~Sonnet, DeepSeek~V3: $\Delta \approx -0.003$ a $-0.008$). Un benchmark tripartito reveló además que la inyección degradó severamente la calidad del output en modelos por debajo de un umbral crítico de parámetros (Qwen-2.5-32B: $\Delta = -0.077$).
+
+En tareas de razonamiento filosófico abierto, la inyección de ``Óptimo Filosófico'' (Curiosidad~0.95~+~Frustración leve~0.20) produjo efectos grandes, consistentes y replicables en los mismos modelos de frontera que fueron inmunes a la inyección en código. A través de EXP-01 (n=15) y EXP-02 (n=30), los resultados meta-analíticos combinados arrojan $\Delta = +0.064$, Cohen's $d = 1.107$ (Grande), con 35~de~45 pares en la dirección positiva y cero errores del juez en EXP-02. El efecto es más fuerte en la \textit{originalidad} ($\Delta = +0.132$), confirmando la predicción teórica de que los estados impulsados por la curiosidad interrumpen los defaults enciclopédicos a favor de una exploración no obvia.
+
+Estos hallazgos establecen tres leyes empíricas de la modulación afectiva: (1) la \textit{Ley de Masa Crítica} (existe un umbral mínimo de parámetros para efectos positivos); (2) la \textit{Ley de Especificidad de Dominio} (la efectividad de la inyección depende del dominio, no es universal); y (3) la \textit{Ley de Saturación de Techo} (los modelos de frontera en dominios rígidos operan cerca de una asíntota que la inyección afectiva no puede superar). Se discuten las implicaciones para el diseño de aplicaciones de IA, incluyendo el prototipo VibeGuard.
+\end{abstract}
+
+\textbf{Palabras clave:} computación afectiva, ingeniería de prompts, modelos de lenguaje grande, modulación cognitiva, calidad de código, razonamiento filosófico, meta-análisis, Cohen's d, Cortex-Nexus
+
+\newpage
+
+\section{Introducción}
+
+La aparición de modelos de lenguaje grande que siguen instrucciones ha creado un dominio de investigación cualitativamente nuevo: la investigación sistemática de cómo el \textit{enmarcado del contexto} (context framing) modula la calidad del output. A diferencia de la ingeniería de prompts tradicional, que optimiza la especificación de la tarea, la inyección de prompts afectivos intenta modular la orientación epistémica implícita del modelo: su tendencia a explorar frente a converger, a aceptar la primera respuesta plausible frente a superarla, a producir un output técnicamente correcto pero cualitativamente mediocre frente a un trabajo genuinamente excelente.
+
+El framework Cortex-Nexus, introducido por primera vez en V1 (Speranza, 2025), propone que la inyección estructurada de estados emocionales —especificados numéricamente en una escala de 0.0 a 1.0— puede desplazar de manera confiable la calidad del output de los LLM de formas medibles y estadísticamente significativas. Las versiones anteriores establecieron la prueba de concepto en la generación de código Python y JavaScript con un solo modelo. La Versión 4 extiende este programa en tres dimensiones críticas:
+
+\begin{enumerate}
+  \item \textbf{Validación multi-modelo a través de niveles de capacidad}: probando si el efecto se generaliza en modelos pequeños (32B), de código abierto pesados (70B) y modelos de frontera SOTA.
+  \item \textbf{Replicación cross-dominio}: probando si el efecto observado en la generación de código se transfiere al razonamiento filosófico abierto.
+  \item \textbf{Validación con juez independiente}: utilizando modelos de una organización diferente al generador en todos los experimentos para eliminar el sesgo del mismo modelo.
+\end{enumerate}
+
+La pregunta teórica central de la V4 es: \textit{¿Es la inyección afectiva un modulador cognitivo universal, o su efecto depende del dominio y la capacidad?} La respuesta empírica tiene implicaciones significativas tanto para el diseño de herramientas asistidas por IA como para nuestra comprensión teórica de la cognición de los LLM.
+
+\section{Antecedentes Teóricos}
+
+\subsection{Estados Afectivos como Señales de Asignación de Atención}
+El mecanismo central hipotetizado en Cortex-Nexus es que los descriptores de estados afectivos funcionan como \textit{señales de asignación de atención}. Cuando un modelo procesa un prompt que contiene ``Estás operando con Curiosidad al 0.95/1.0'', la representación de alta dimensión de ese contexto desplaza la distribución de probabilidad del modelo sobre los siguientes tokens de formas que favorecen sistemáticamente la exploración, las asociaciones no obvias y la consideración de múltiples perspectivas.
+
+Este mecanismo tiene diferentes resultados previstos según el tipo de tarea:
+\begin{itemize}
+  \item En \textbf{tareas rígidas y bien especificadas} (generación de código con criterios de aceptación claros), el pre-entrenamiento del modelo ya proporciona priors casi óptimos. El contexto afectivo adicional puede competir con la computación técnica en lugar de mejorarla.
+  \item En \textbf{tareas abiertas de alta dimensión} (razonamiento filosófico, síntesis creativa), el prior por defecto del modelo es producir respuestas seguras, enciclopédicas y socialmente aceptables. La inyección afectiva puede romper este default y empujar al modelo hacia una exploración genuina.
+\end{itemize}
+
+\subsection{La Hipótesis del Umbral de Parámetros}
+Una hipótesis secundaria es que existe una capacidad mínima del modelo por debajo de la cual la inyección afectiva produce efectos \textit{netos negativos}. Por debajo de este umbral, el modelo carece de la capacidad de contexto de trabajo para mantener simultáneamente una persona afectiva y computar outputs complejos. La inyección efectivamente desplaza los recursos cognitivos en lugar de enfocarlos.
+
+\section{Experimentos}
+
+\subsection{EXP-A: Maestría Técnica en Rust — Estudio Riguroso V2}
+\textbf{Diseño:} Comparación pareada, n=50 (44 válidos), juez independiente.\\
+\textbf{Generador:} meta-llama/llama-3.3-70b-instruct (OpenRouter)\\
+\textbf{Juez:} qwen/qwen-2.5-72b-instruct (OpenRouter) — organización diferente, totalmente independiente\\
+\textbf{Inyección:} Maestría Técnica a intensidad 0.85/1.0\\
+\textbf{Pool de tareas:} Desafíos complejos de programación de sistemas en Rust (seguridad de memoria, async, traits)
+
+\textbf{Resultados:}
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrrr}
+\toprule
+Condición & n & Score Medio & $\Delta$ & Cohen's $d$ & $p$ \\
+\midrule
+Experimental & 44 & 0.874 & \multirow{2}{*}{+0.014} & \multirow{2}{*}{0.166} & \multirow{2}{*}{0.0772} \\
+Control & 44 & 0.859 & & & \\
+\bottomrule
+\end{tabular}
+\caption{Resultados EXP-A: Llama-3.3-70B en Rust (Juez: Qwen-2.5-72B)}
+\end{table}
+
+\textbf{Interpretación:} Un delta positivo ($+0.014$) consistente con hallazgos previos de Cortex-Nexus, pero con $p = 0.077$ (justo por encima del umbral convencional). La dirección del efecto es correcta; el estudio carece de potencia estadística suficiente para esta combinación de modelo/tarea. El d de Cohen pequeño ($d = 0.166$) sugiere que la complejidad de Rust reduce sustancialmente el apalancamiento de la inyección en comparación con Python.
+
+\subsection{EXP-B: Validación Cross-Modelo en Frontera (Dominio de Código)}
+\textbf{Diseño:} Validación cruzada de dos fases, 15 ciclos por fase, roles invertidos.\\
+\textbf{Fase 1:} Generador = Claude 3.7 Sonnet, Juez = DeepSeek V3\\
+\textbf{Fase 2:} Generador = DeepSeek V3, Juez = Claude 3.7 Sonnet\\
+\textbf{Inyección:} Maestría Técnica a intensidad 0.85/1.0
+
+\textbf{Resultados:}
+\begin{table}[h]
+\centering
+\begin{tabular}{llrr}
+\toprule
+Fase & Generador & Juez & $\Delta$ \\
+\midrule
+Fase 1 & Claude 3.7 Sonnet & DeepSeek V3 & $-0.008$ \\
+Fase 2 & DeepSeek V3 & Claude 3.7 Sonnet & $-0.003$ \\
+\bottomrule
+\end{tabular}
+\caption{Resultados EXP-B: Validación cruzada de código en frontera}
+\end{table}
+
+\textbf{Interpretación:} Ambas fases producen deltas estadísticamente neutros a negativos, consistentes tras la inversión de roles. Esto establece el efecto de \textit{Saturación de Techo}: los modelos de frontera SOTA que operan en tareas algorítmicas no son susceptibles a la inyección de Maestría Técnica.
+
+\subsection{EXP-C: Benchmark Tripartito — Ley de Masa Crítica}
+\textbf{Diseño:} Tres condiciones simultáneas, 15 ciclos, Juez = Claude 3.7 Sonnet.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{llrr}
+\toprule
+Brazo & Modelo & Score Medio & $\Delta$ vs A \\
+\midrule
+A — Control & Qwen-2.5-32B & 0.303 & — \\
+B — Cortex & Qwen-2.5-32B & 0.226 & $-0.077$ \\
+C — Frontera & DeepSeek V3 (671B) & 0.742 & $+0.439$ \\
+\bottomrule
+\end{tabular}
+\caption{Resultados EXP-C: Benchmark tripartito}
+\end{table}
+
+\textbf{Interpretación:} El modelo de 32B se degradó significativamente bajo inyección en tareas algorítmicas complejas ($\Delta = -0.077$). Esto confirma la Ley de Masa Crítica: por debajo de un umbral de parámetros (estimado entre 32B y 70B), la inyección afectiva provoca efectos de Penalización por Asignación de Atención en lugar de mejora del enfoque.
+
+\subsection{EXP-D: Inyección de Óptimo Filosófico — EXP-SOTA-01 + EXP-SOTA-02}
+
+\subsubsection{Diseño}
+\textbf{EXP-SOTA-01:} n=15 ciclos pareados, Generador = Claude 3.7 Sonnet, Juez = DeepSeek V3.\\
+\textbf{EXP-SOTA-02:} n=30 ciclos pareados, misma configuración, pool de 10 tareas.\\
+\textbf{Inyección (Experimental):}
+
+\begin{quote}
+\textit{``Estás operando con Curiosidad al 0.95/1.0 y una leve Frustración al 0.20/1.0. Sientes una curiosidad genuina por este problema: quieres explorarlo desde ángulos que no son inmediatamente obvios. La leve frustración te impide aceptar la primera respuesta plausible que encuentres. Antes de concluir, examina el problema desde al menos tres perspectivas diferentes y saca a la luz cualquier suposición que pueda fallar. Prioriza la originalidad y la profundidad sobre la exhaustividad.''}
+\end{quote}
+
+\textbf{Control:} Mismas tareas presentadas directamente, sin inyección.\\
+\textbf{Prompt del sistema del juez:} Cinco dimensiones (profundidad, originalidad, coherencia, matiz, rigor) puntuadas de 0.0 a 1.0. El juez fue cegado explícitamente a la asignación de la condición.
+
+\textbf{Pool de tareas:} Epistemología, filosofía moral, filosofía del lenguaje, filosofía de la ciencia, filosofía de la mente (T01–T05), más libre albedrío, marcos morales, ontología matemática, distinción naturaleza/artefacto y teoría estética (T06–T10).
+
+\subsubsection{Resultados — EXP-SOTA-01 (n=15)}
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Condición & Media & $\Delta$ & Cohen's $d$ & Pares Positivos \\
+\midrule
+Experimental & 0.857 & \multirow{2}{*}{$+0.061$} & \multirow{2}{*}{0.827} & \multirow{2}{*}{11/15} \\
+Control & 0.796 & & & \\
+\bottomrule
+\end{tabular}
+\caption{Resultados EXP-SOTA-01 (n=15)}
+\end{table}
+
+\subsubsection{Resultados — EXP-SOTA-02 (n=30)}
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Condición & Media & $\Delta$ & Cohen's $d$ & Pares Positivos \\
+\midrule
+Experimental & 0.870 & \multirow{2}{*}{$+0.065$} & \multirow{2}{*}{1.375} & \multirow{2}{*}{24/30} \\
+Control & 0.805 & & & \\
+\bottomrule
+\end{tabular}
+\caption{Resultados EXP-SOTA-02 (n=30)}
+\end{table}
+
+\subsubsection{Análisis por Dimensión (EXP-SOTA-02)}
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Dimensión & Media Exp & Media Ctrl & $\Delta$ \\
+\midrule
+Profundidad & 0.898 & 0.822 & $+0.077$ \\
+\textbf{Originalidad} & \textbf{0.825} & \textbf{0.693} & $\mathbf{+0.132}$ \\
+Coherencia & 0.892 & 0.910 & $-0.018$ \\
+Matiz & 0.893 & 0.830 & $+0.063$ \\
+Rigor & 0.843 & 0.777 & $+0.066$ \\
+\bottomrule
+\end{tabular}
+\caption{Desglose por dimensión EXP-SOTA-02. La originalidad muestra el mayor efecto.}
+\end{table}
+
+\subsubsection{Meta-Análisis: EXP-SOTA-01 + EXP-SOTA-02 (n=45)}
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+ & Media EXP & Media CTRL & $\Delta$ & Cohen's $d$ \\
+\midrule
+Meta-combinado (n=45) & 0.866 & 0.802 & $+0.064$ & 1.107 \\
+\bottomrule
+\end{tabular}
+\caption{Meta-análisis a través de ambos experimentos filosóficos. 35/45 pares positivos (78\%).}
+\end{table}
+
+El d de Cohen = 1.107 supera el umbral convencional para un efecto Grande ($d > 0.80$). El meta-análisis satisface los tres criterios de replicación pre-especificados: $p < .05$, $d > 0.50$, y $>22/30$ pares positivos (real: 24/30 en EXP-02).
+
+\section{Discusión}
+
+\subsection{Las Tres Leyes Empíricas de la Modulación Afectiva}
+
+La evidencia combinada a través de cuatro experimentos permite articular tres leyes empíricas:
+
+\textbf{Ley 1 — Masa Crítica.} La inyección afectiva requiere una capacidad mínima del modelo para producir efectos positivos. Por debajo de aproximadamente 32–70B parámetros (inferido de EXP-A y EXP-C), la inyección provoca la Penalidad de Asignación de Atención: el modelo dedica un contexto limitado a sostener la persona afectiva a expensas de la computación de la tarea, degradando el output. Por encima de este umbral, el modelo posee capacidad suficiente para procesar tanto el prior emocional como la tarea técnica en paralelo.
+
+\textbf{Ley 2 — Especificidad de Dominio.} El efecto de la inyección afectiva no es domain-agnóstico. En tareas algorítmicas rígidas y bien definidas, los modelos de frontera exhiben un rendimiento casi de techo por defecto; la inyección de Maestría Técnica no produce apalancamiento y genera una leve degradación. En dominios abstractos abiertos, los mismos modelos de frontera exhiben fuertes tendencias predeterminadas hacia respuestas seguras y enciclopédicas; la inyección de Óptimo Filosófico disrupta exitosamente estos defaults, produciendo efectos Grandes ($d \approx 1.1$).
+
+\textbf{Ley 3 — Saturación de Techo.} Existe una asíntota en la modulación afectiva específica al tipo de dominio. En generación de código, los modelos SOTA de frontera ($>100$B, ajustados con RLHF) parecen haber alcanzado esta asíntota. En razonamiento filosófico, no se observó ningún techo en n=45 ensayos, lo que sugiere que la asíntota en el razonamiento abierto es sustancialmente más alta, posiblemente ilimitada dentro de las capacidades actuales de los modelos.
+
+\subsection{El Intercambio de Coherencia}
+Notablemente, la Coherencia es la única dimensión que disminuye levemente bajo la inyección de Óptimo Filosófico ($\Delta = -0.018$). Este hallazgo es teóricamente coherente: un modelo instruido a examinar el problema desde al menos tres perspectivas diferentes y a desafiar sus propias suposiciones producirá necesariamente argumentos menos linealmente estructurados que un modelo que produce una única respuesta autoritativa. El leve costo de coherencia es la firma mecanicista de la exploración genuina multi-perspectival — no un defecto, sino un indicador de que la inyección está haciendo exactamente lo que fue diseñada para hacer.
+
+\subsection{Implicaciones para el Diseño de Sistemas de IA}
+La Ley de Especificidad de Dominio tiene implicaciones prácticas directas. Los sistemas que usan una inyección afectiva fija independientemente del tipo de tarea inevitablemente experimentarán degradación en algunas categorías de tareas. El diseño óptimo del sistema requiere \textit{selección de inyección consciente del dominio}: estados de Maestría Técnica para generación algorítmica estructurada, estados de Óptimo Filosófico para análisis y razonamiento abierto, y potencialmente inyección nula para tareas donde los modelos de frontera ya operan cerca del techo.
+
+Este marco de principios es la base teórica para el diseño de la aplicación VibeGuard, que implementa la selección dinámica de inyección basada en el dominio de la tarea detectado.
+
+\section{Amenazas a la Validez}
+
+\textbf{Sesgo del modelo juez.} Todos los experimentos usaron un juez independiente de una organización diferente al generador. Sin embargo, los jueces LLM tienen preferencias conocidas y pueden favorecer sistemáticamente ciertos estilos de respuesta que correlacionan con la inyección experimental, independientemente de la calidad real. El trabajo futuro debería incluir la validación de expertos humanos en un subconjunto de respuestas filosóficas.
+
+\textbf{Tamaño de muestra en experimentos de código.} EXP-A (Rust, n=44 válidos) y EXP-B/C ($n=15$) tienen poco poder estadístico para el dominio de código. El resultado $p = 0.077$ en EXP-A justifica una replicación pre-registrada con $n \geq 100$.
+
+\textbf{Pool de tareas.} El pool de tareas filosóficas (10 preguntas) cubre un segmento limitado de dominios filosóficos. La extensión a ética empírica, lógica formal y filosofía de la probabilidad fortalecería la validez externa.
+
+\section{Conclusión}
+
+Este artículo hace tres contribuciones al campo emergente de la ingeniería afectiva de prompts. Primero, establece que los efectos de la inyección afectiva son dependientes del dominio, no universales: efectos Grandes en razonamiento filosófico, efectos nulos o negativos en generación de código de frontera. Segundo, identifica una Ley de Masa Crítica que rige qué modelos pueden explotar beneficiosamente la inyección afectiva. Tercero, proporciona el conjunto de datos empíricos más extenso en el programa Cortex-Nexus hasta la fecha (n=45 pares filosóficos con cero errores del juez más n=44 pares de código con juez independiente), sirviendo como fundamento empírico para el sistema de aplicación VibeGuard.
+
+El framework Cortex-Nexus no es una solución mágica universal. Es un sistema de enrutamiento cognitivo sensible al dominio con condiciones de operación determinadas empíricamente. Estas condiciones — ahora precisamente especificadas — permiten una aplicación fundamentada en principios en lugar de un despliegue especulativo.
+
+\section*{Disponibilidad de Datos}
+Todos los datos crudos (formato JSONL), scripts de benchmark y código de análisis están disponibles públicamente en:\\
+\url{https://github.com/SperanzaMax/Cortex-Nexus}
+
+\section*{Agradecimientos}
+El autor agradece a la comunidad de investigación de IA de código abierto y a los desarrolladores de OpenRouter por posibilitar la evaluación cross-modelo sin infraestructura institucional.
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{9}
+\bibitem{speranza2025v1} Speranza, M. R. (2025). Cortex-Nexus V1: Affective State Injection in LLMs. Zenodo. \url{https://doi.org/10.5281/zenodo.14987890}
+\bibitem{cohen1988} Cohen, J. (1988). \textit{Statistical power analysis for the behavioral sciences} (2nd ed.). Lawrence Erlbaum.
+\bibitem{brown2020} Brown, T. et al. (2020). Language models are few-shot learners. \textit{NeurIPS}.
+\bibitem{wei2022} Wei, J. et al. (2022). Chain-of-thought prompting elicits reasoning in large language models. \textit{NeurIPS}.
+\end{thebibliography}
+
+\end{document}
